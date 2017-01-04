@@ -100,7 +100,7 @@ def crawl_data(void):
         # print(file_name + " " + separator + " " + str(crawler_id) + " " + value_title + " " + str(crit))
         #print ("criteria s :::: " + str(crit))
         #print (file_name + " :::: " + separator + " :::: " + str(crawler_id))
-        output = (subprocess.check_output("python3 Osori-WebCrawler/" + file_name, shell=True)).decode("utf-8") #crawl the file
+        output = (subprocess.check_output("python3 WebCrawler/" + file_name, shell=True)).decode("utf-8") #crawl the file
         output_list = output.splitlines()                   #split its data by word-break
         print(output_list)
         #print ("output ::: " + output + " :::::: " + output_list[0])

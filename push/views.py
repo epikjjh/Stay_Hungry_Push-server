@@ -13,11 +13,7 @@ from django.core import exceptions
 from datetime import datetime, timedelta
 from rest_framework.response import Response
 
-api_list=[]
-push_api_and = settings.PUSH_API_AND
 push_api_ios = settings.PUSH_API_IOS
-api_list.append(push_api_and)
-api_list.append(push_api_ios)
 tokens = []
 changed_crawler_id = ['0', 'crawler_name', 'changed_line', 'link_urls']
 data_base = [['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10'],
@@ -28,9 +24,7 @@ db_created = 0
 
 @csrf_exempt
 def push_urls(void):
-    title_ios = str(changed_crawler_id[1] + " Changed!")
-    message_ios = str(changed_crawler_id[2])
-    message_data_android = {'title': str(changed_crawler_id[1] + " Changed!"),
+    message_data_ios = {'title': str(changed_crawler_id[1] + " Changed!"),
                     'body': str(changed_crawler_id[2]),
                     'clickurl': str(changed_crawler_id[3])
                     }
@@ -45,20 +39,16 @@ def push_urls(void):
         tokens.append(k['push_token'])
 
 
-    for i in api_list:
-        push_service = FCMNotification(api_key=i)
-        result = None
-        try:
-            if i == api_list[0]:
-                print("and")
-                result = push_service.notify_multiple_devices(registration_ids=tokens, data_message=message_data_android)
-            elif i == api_list[1]:
-                result = push_service.notify_multiple_devices(message_title=title_ios, message_body=message_ios,registration_ids=tokens, data_message={})
+    push_service = FCMNotification(api_key=push_api_ios)
+    result = None
+    try:
+        print("IOS")
+        result = push_service.notify_multiple_devices(registration_ids=tokens, data_message=message_data_ios)
             #message_title= title, message_body= message,
 
-        except Exception as e:
-            print(e)
-            print(str(result))
+    except Exception as e:
+        print(e)
+        print(str(result))
 
     tokens.clear()
 
@@ -71,7 +61,7 @@ def test_time(void) :
 def teste_crawl(void) :
 
     date_now = datetime.now()
-    with open('Osori-WebCrawler/settings.json') as json_data:
+    with open('WebCrawler/settings.json') as json_data:
         data = json.load(json_data)
 
 
